@@ -1,9 +1,11 @@
 import React from 'react'
 import { StackNavigator } from 'react-navigation';
 
-import TopicScreen from './src/pages/Topic'
+import TopicsScreen  from './src/pages/Topic/TopicsScreen'
 import WelcomeScreen from './src/pages/Welcome'
+import TopicDetailScreen from './src/pages/Topic/TopicDetailScreen'
 
+console.log(TopicsScreen)
 export const Cnode  = StackNavigator({
    welcome:{
      screen:WelcomeScreen,
@@ -12,13 +14,19 @@ export const Cnode  = StackNavigator({
      },
    },
    Topic:{
-     screen:TopicScreen,
+     screen:TopicsScreen,
+   },
+   TopicDetailScreen:{
+     screen:TopicDetailScreen,
+     navigationOptions: {
+       header: null,
+     },
    }
 })
 
 const MainNavigator = StackNavigator({
   Topic:{
-    screen:TopicScreen,
+    screen:TopicsScreen,
     headerMode: 'screen',
   }
 })

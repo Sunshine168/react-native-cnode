@@ -14,10 +14,11 @@ const TopicLabelContext = {
   share:{text:"分享",backgroundColor:"#00BFFF"},
   ask:{text:"问答",backgroundColor:"#00CED1"},
   job:{text:"招聘",backgroundColor:"#00EE76"},
-  default:{text:"默认",backgroundColor:"#7B68EE"}
+  dev:{text:"测试",backgroundColor:"#FF6A6A"},
+  default:{text:"默认",backgroundColor:"#7B68EE"},
 }
 const Deaful_tTab = 'default';
-const TopicLabel = ( { type } )=>{
+export const TopicLabel = ( { type } )=>{
     let { good,top,tab } = type,
         topicLabelContext,
         realTab;
@@ -50,7 +51,7 @@ const TopicLabel = ( { type } )=>{
     )
 }
 
-export const TopicListItem = ({topic,navigate})=>{
+export const TopicListItem = ({topic,navigation})=>{
      let topicItem = topic.item,
       { good,tab,top } = topicItem,
        topicLabelType = {
@@ -59,7 +60,12 @@ export const TopicListItem = ({topic,navigate})=>{
            top
        };
    return (
-    <TouchableOpacity onPress = {()=>{console.log(topic.id)}}>
+    <TouchableOpacity onPress = {()=>{
+      console.log(navigation)
+      navigation.navigate('TopicDetailScreen',{
+        id:topicItem.id,
+      })
+    }}>
       <View style={style.container}>
         <View style={style.wrapper}>
           <View style={style.topic}>

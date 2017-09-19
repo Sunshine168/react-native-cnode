@@ -9,6 +9,7 @@ import { StackNavigator } from 'react-navigation';
 import { Cnode } from './routes';
 import { Provider } from 'react-redux';
 import { configureStore } from './store';
+import rootSaga from './src/saga/index'
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -27,12 +28,13 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
 });
-
+const store = configureStore;
+store.runSaga(rootSaga)
 class App extends Component {
 
    render(){
       return(
-        <Provider store={configureStore}>
+        <Provider store={store}>
           <Cnode/>
         </Provider>
       )

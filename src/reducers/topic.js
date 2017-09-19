@@ -1,14 +1,19 @@
 import {
   GET_HOME_TOPICS,
-  ADD_TOPICS_PAGE
+  ADD_TOPICS_PAGE,
+  GET_TOPIC_DETAIL,
 } from '../actions/topic.type';
 
 
 const initialState = {
   page:1,
   topics:[],
+  topic:null,
+  currentTopicDetailId:null,
   isPendingTopics: false,
+  isPendingTopic: false,
   error:'',
+
 }
 
 export const topicReducer = ( state = initialState, action={}) => {
@@ -21,7 +26,7 @@ export const topicReducer = ( state = initialState, action={}) => {
     case GET_HOME_TOPICS.SUCCESS:
     return {
       ...state,
-      topics:[...state.topics,...action.payload],
+      topics:[...action.payload,...state.topics],
       isPendingTopics:false,
       page:state.page + 1,
     };
@@ -35,6 +40,21 @@ export const topicReducer = ( state = initialState, action={}) => {
     return {
       ...state,
       page:state.page + 1,
+    }
+    case GET_TOPIC_DETAIL.REQUEST:
+    return {
+      ...state,
+      currentTopicDetailId:action.id
+    }
+    case GET_TOPIC_DETAIL.SUCCESS:
+    return {
+      ...state,
+      topic:action.payload,
+    }
+    case GET_TOPIC_DETAIL.ERROR:
+    return {
+      ...state,
+      error:action.error,
     }
     default:
     return state;
