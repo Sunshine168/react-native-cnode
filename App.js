@@ -3,8 +3,10 @@ import {
   View,
   Text,
   StyleSheet,
-  AppRegistry
+  AppRegistry,
+  AsyncStorage
 } from 'react-native';
+import { persistStore } from 'redux-persist';
 import { StackNavigator } from 'react-navigation';
 import { Cnode } from './routes';
 import { Provider } from 'react-redux';
@@ -31,7 +33,14 @@ const styles = StyleSheet.create({
 const store = configureStore;
 store.runSaga(rootSaga)
 class App extends Component {
-
+   componentWillMount() {
+     persistStore(
+       store,
+       { storage: AsyncStorage,blacklist: ['topic']},
+       () => {
+           this.setState({ rehydrated: true });
+       });
+   }
    render(){
       return(
         <Provider store={store}>
@@ -40,6 +49,5 @@ class App extends Component {
       )
    }
 }
-
 
 AppRegistry.registerComponent('cnode_project', () => App);

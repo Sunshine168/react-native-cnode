@@ -28,9 +28,11 @@ export const fetchTopics = (params)=>{
   })
 }
 
-/*
- 获取topic详情
- */
+/**
+ *获取topic详情
+ * @param topicId 主题id
+ * @param token 用户accesstoken
+ **/
 export const fetchTopicDetail = (topicId,token)=>{
       let url = URL + `/topic/${topicId}?mdrender=false`,
           processUrl;
@@ -51,9 +53,10 @@ export const fetchTopicDetail = (topicId,token)=>{
       })
 }
 
-/*
-  通过accessToken登录
- */
+/**
+ *通过accessToken登录
+ * @param accesstoken 需要验证的accesstoken
+ **/
 export const accessToken = (accesstoken)=>{
        let url = URL + '/accesstoken';
        return new Promise((resolve,reject)=>{
@@ -75,4 +78,26 @@ export const accessToken = (accesstoken)=>{
            reject(error)
          })
        })
+}
+
+
+
+/**
+ *通过accessToken获取用户所有已读和未读信息
+ * @param accesstoken 需要验证的accesstoken
+ **/
+export const fetchMessages = (accesstoken)=> {
+      let url = URL + `/messages?accesstoken=${accesstoken}&&mdrender=false`;
+      return new Promise((resolve,reject)=>{
+        fetch(url,{
+          method:'GET'
+        })
+        .then((response)=> response.json())
+        .then((res)=>{
+          resolve(res)
+        })
+        .catch((error)=>{
+          reject(error)
+        })
+      })
 }

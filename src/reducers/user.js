@@ -2,7 +2,7 @@ import { LOGIN_IN } from '../actions/user.type'
 
 
 const initialState = {
-  accessToken:"",
+  accesstoken:"",
   userInfo:{
 
   },
@@ -27,7 +27,8 @@ export const userReducer = ( state =initialState,action={})=>{
       return {
         ...state,
         userInfo:action.payload,
-        isLogining:false
+        isLogining:false,
+        error:""
       }
     }
       case LOGIN_IN.ERROR:{

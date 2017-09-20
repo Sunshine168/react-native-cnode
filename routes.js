@@ -9,6 +9,15 @@ import PersonalScreen from './src/pages/Personal/PersonalScreen';
 import { Icon } from 'react-native-elements';
 import LoginScreen  from './src/pages/Auth/LoginScreen'
 
+// const NotificationsStackNavigator = StackNavigator({
+//    Notification:{
+//      screen:NotificationsScreen
+//    },
+//    Login:{
+//      screen:LoginScreen,
+//    }
+// })
+
 const HomeTabNavigator = TabNavigator({
   Topic:{
      screen:TopicsScreen,
@@ -70,6 +79,9 @@ export const Cnode  = StackNavigator({
        header: null,
      },
    },
+   Login:{
+     screen:LoginScreen,
+   },
    Home:{
      screen:HomeTabNavigator,
      navigationOptions: {
@@ -79,9 +91,6 @@ export const Cnode  = StackNavigator({
    TopicDetail:{
      screen:TopicDetailScreen,
    },
-   Login:{
-     screen:LoginScreen
-   }
 },
 {
   animationEnabled: true,

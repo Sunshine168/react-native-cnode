@@ -1,5 +1,5 @@
 import { accessToken } from '../api/';
-import { put, select, call, fork, race } from 'redux-saga/effects';
+import { put, select, call, fork, race, take } from 'redux-saga/effects';
 import { LOGIN_IN, LOGIN_OUT } from '../actions/user.type';
 
 const loginIn = function* (accesstoken){
@@ -31,7 +31,7 @@ export const watchAuth = function* (){
   while(true){
     const result = yield take(LOGIN_IN.REQUEST);
      yield race([
-       take(LOGIN_OUT.SUCCESS),call(loginIn,result.accesstoken);
+       take(LOGIN_OUT.SUCCESS),call(loginIn,result.accesstoken)
      ])
   }
 }

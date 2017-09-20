@@ -67,7 +67,6 @@ export const getTopicDetail = function* (){
 export const watchRequestTopics = function* (){
   while(true){
      const result = yield take(GET_HOME_TOPICS.REQUEST);
-     console.log("debug")
      yield fork(getTopics,result)
   }
 

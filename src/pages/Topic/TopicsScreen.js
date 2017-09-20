@@ -9,8 +9,8 @@ import {
   ScrollView,
   Platform,
 } from 'react-native';
-import { getTopics, addPage } from '../../actions/topic';
 import { connect } from 'react-redux';
+import { getTopics, addPage } from '../../actions/topic';
 const TopicKey =  [{ key: 'all', value: '全部' },
 { key: 'job', value: '招聘' },
 { key: 'share', value: '分享' },
@@ -36,6 +36,9 @@ class TopicsScreen extends  Component {
     fetchTopics = () =>{
     const { getTopics,isPendingTopics } = this.props,
           { tab } = this.state;
+    if(isPendingTopics){
+      return;
+    }
     if(tab == 'all'){
       getTopics({
         mdrender:"false",

@@ -4,12 +4,14 @@ import {
   Button,
   Text,
   TextInput,
-  StyleSheet
+  StyleSheet,
+  Dimensions
 } from 'react-native';
 import { connect } from 'react-redux';
 import{ loginIn } from '../../actions/user';
 
-
+const { width } = Dimensions.get('window')
+import { resetNavigationTo } from '../../utils/method-helpers'
 class LoginScreen extends Component {
 
 
@@ -18,17 +20,47 @@ class LoginScreen extends Component {
     title:"登录界面",
     headerRight:(
       <Button
-        title={"扫码登录"}
-        onPress={()=>{console.log("")}}
+        title={"暂不登录"}
+        onPress={()=>{
+          navigation.navigate('Home')
+        }}
       />
 )
   }
 }
+  constructor(props){
+    super(props)
+    this.state = {
+      accesstoken:"",
+    }
+  }
+  componentDidMount(){
+      const { user, navigation } = this.props;
+      if(user.userInfo.success){
+        resetNavigationTo('Home', navigation);
+      }
+  }
+  loginIn = () =>{
+    const { loginIn } = this.props;
+    const { accesstoken } = this.state;
+    loginIn(accesstoken)
+  }
   render(){
      return (
        <View style={style.container}>
          <Text>请输入 Access Token </Text>
-         <Button>登录</Button>
+         <TextInput
+           style={style.accessInput}
+           onChangeText={(text) => this.setState({accesstoken:text})}
+         />
+         <Button
+           title={"点击登录"}
+           onPress={this.loginIn}
+         />
+         <Button
+           title={"扫码登录"}
+           onPress={()=>{console.log("...")}}
+         />
        </View>
      )
   }
@@ -39,11 +71,20 @@ const style = StyleSheet.create({
     flex:1,
     alignItems:"center",
     justifyContent:"center",
+  },
+  accessInput:{
+    width:width,
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1
   }
 })
 
-const mapDispatchToProps = ()=>({
-   logIn:(accesstoken)=>loginIn(accesstoken)
+const mapStateToProps = (state)=>({
+  user:state.user
+})
+const mapDispatchToProps = (dispatch)=>({
+   loginIn:(accesstoken)=>dispatch(loginIn(accesstoken))
 })
 
-export default connect(null,mapDispatchToProps)(LoginScreen);
+export default connect(mapStateToProps,mapDispatchToProps)(LoginScreen);

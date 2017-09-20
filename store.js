@@ -1,12 +1,12 @@
 import { compose, createStore, applyMiddleware } from 'redux';
-import { autoRehydrate } from 'redux-persist';
+import { autoRehydrate,persistStore } from 'redux-persist';
 import Reactotron from 'reactotron-react-native'; // eslint-disable-line import/no-extraneous-dependencies
 import createLogger from 'redux-logger';
-// import reduxThunk from 'redux-thunk';
 import createSagaMiddleware from 'redux-saga'
 import './src/config/reactotron';
 import { rootReducer } from './src/reducers';
 import rootSaga from './src/saga/index'
+import { AsyncStorage } from 'react-native';
 const HANDLE = {
   TRON_ENABLED:true,
 }
@@ -27,7 +27,7 @@ const getMiddleware = () => {
 const getEnhancers = () => {
   const enhancers = [];
 
-  // enhancers.push(autoRehydrate());
+  enhancers.push(autoRehydrate());
 
   return enhancers;
 };
@@ -44,5 +44,4 @@ if (__DEV__ && tronEnabled) {
   store = createStore(rootReducer, compose(getMiddleware(), ...getEnhancers()));
 }
 store.runSaga = sagaMiddleware.run;
-
 export const configureStore = store;

@@ -19,9 +19,12 @@ const style = StyleSheet.create({
   }
 })
 
-export default class NotificationsScreen extends Component {
+class NotificationsScreen extends Component {
+  componentDidMount(){
+   console.log("...")
+  }
   render(){
-    const { navigation } = this.props;
+    const { user, navigation } = this.props;
     return (
       <View style={style.container}>
         <TabHeaderBar
@@ -40,3 +43,5 @@ export default class NotificationsScreen extends Component {
 const mapStateToProps = (state)=>({
   user:state.user,
 })
+
+export default connect(mapStateToProps)(NotificationsScreen);
