@@ -1,5 +1,5 @@
 import { fetchTopics, fetchTopicDetail } from '../api/index';
-import { put, select, call, take, fork,takeEvery } from 'redux-saga/effects';
+import { put, select, call, take, fork, takeLatest } from 'redux-saga/effects';
 import { GET_HOME_TOPICS, GET_TOPIC_DETAIL } from '../actions/topic.type'
 export const getTopics =  function* (params){
    try{
@@ -38,12 +38,11 @@ export const getTopics =  function* (params){
 }
 
 export const getTopicDetail = function* (){
-  console.log("getTopicDetail")
   try{
     yield put({
       type:GET_TOPIC_DETAIL.PENDING
     });
-    const currentTopicDetailId = yield select(state=>state.topic.currentTopicDetailId);
+    const { currentTopicDetailId, isPendingTopics } = yield select(state=>state.topic);
     const data = yield call(fetchTopicDetail,currentTopicDetailId);
     if(data.success == 1){
        yield put({
@@ -83,7 +82,6 @@ export const watchRequestTopic = function* (){
   //  yield* takeEvery(GET_TOPIC_DETAIL.REQUEST,getTopicDetail);
   while(true){
     const result = yield take(GET_TOPIC_DETAIL.REQUEST)
-    console.log(result);
     yield fork(getTopicDetail,result.id)
   }
 }

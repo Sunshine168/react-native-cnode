@@ -50,3 +50,29 @@ export const fetchTopicDetail = (topicId,token)=>{
         })
       })
 }
+
+/*
+  通过accessToken登录
+ */
+export const accessToken = (accesstoken)=>{
+       let url = URL + '/accesstoken';
+       return new Promise((resolve,reject)=>{
+         fetch(url,{
+           method:'POST',
+           headers: {
+           'Accept': 'application/json',
+           'Content-Type': 'application/json'
+         },
+           body:JSON.stringify({
+            accesstoken
+          })
+         })
+         .then(response=>response.json())
+         .then((res)=>{
+            resolve(res)
+         })
+         .catch((error)=>{
+           reject(error)
+         })
+       })
+}

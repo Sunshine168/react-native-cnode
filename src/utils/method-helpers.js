@@ -8,3 +8,8 @@ export const resetNavigationTo = (routeName: string, navigation: {}) => {
 
   navigation.dispatch(resetAction);
 };
+
+
+// const AuthHanlde = ()=>{
+//
+// }

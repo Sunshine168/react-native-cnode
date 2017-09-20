@@ -32,7 +32,7 @@ export default class WelcomeScreen extends Component {
         //  this.setState({
         //    isJump:true
         //  })
-         resetNavigationTo('Topic', navigation);
+         resetNavigationTo('Home', navigation);
     },1000)
   }
   render(){

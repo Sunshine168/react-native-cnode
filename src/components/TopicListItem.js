@@ -61,8 +61,7 @@ export const TopicListItem = ({topic,navigation})=>{
        };
    return (
     <TouchableOpacity onPress = {()=>{
-      console.log(navigation)
-      navigation.navigate('TopicDetailScreen',{
+      navigation.navigate('TopicDetail',{
         id:topicItem.id,
       })
     }}>

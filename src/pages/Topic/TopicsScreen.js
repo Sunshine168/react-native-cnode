@@ -7,15 +7,16 @@ import {
   Text,
   FlatList,
   ScrollView,
+  Platform,
 } from 'react-native';
 import { getTopics, addPage } from '../../actions/topic';
 import { connect } from 'react-redux';
 const TopicKey =  [{ key: 'all', value: '全部' },
-{ key: 'good', value: '精华' },
+{ key: 'job', value: '招聘' },
 { key: 'share', value: '分享' },
 { key: 'ask', value: '问答' },
 { key: 'dev', value: '测试' }];
-const TOPIC_LIMIT = 10;
+const TOPIC_LIMIT = 15;
 class TopicsScreen extends  Component {
   static navigationOptions = {
     title: '话题',
@@ -33,17 +34,33 @@ class TopicsScreen extends  Component {
     this.fetchTopics()
     }
     fetchTopics = () =>{
-    const { getTopics } = this.props;
+    const { getTopics,isPendingTopics } = this.props,
+          { tab } = this.state;
+    if(isPendingTopics){
+      return;
+    }
+    if(tab == 'all'){
+      getTopics({
+        mdrender:"false",
+        limit:TOPIC_LIMIT,
+      })
+    }
     getTopics({
       mdrender:"false",
       limit:TOPIC_LIMIT,
+      tab:tab
     })
   }
   getTabs = () =>{
     let { activeKey, tab } = this.state;
     return (
       TopicKey.map((item,index)=>(
-        <TouchableOpacity key={item.key}>
+        <TouchableOpacity key={item.key} onPress={()=>{
+          this.setState({
+            activeKey:item.key,
+            tab:item.key,
+          })
+        }}>
           <View style={[styles.tabView, item.key == tab ? styles.tabActive : null]}>
             <Text style={[styles.tabText, item.key == tab ? styles.textActive : null]}>{item.value}</Text>
           </View>
@@ -53,13 +70,28 @@ class TopicsScreen extends  Component {
   }
   renderItem = ( topic ) => {
     const { navigation } = this.props;
-    return (
-      <TopicListItem
-        key={topic.id}
-        navigation={navigation}
-        topic={topic}
-      />
-    );
+    const { tab } = this.state;
+    if(tab == 'all'){
+      return (
+        <TopicListItem
+          key={topic.id}
+          navigation={navigation}
+          topic={topic}
+          activeKey={tab}
+        />
+      );
+    }else{
+        return (
+          tab == topic.item.tab ?
+          <TopicListItem
+            key={topic.id}
+            navigation={navigation}
+            topic={topic}
+            activeKey={tab}
+          />
+          :null
+        )
+    }
   };
 
   render(){
@@ -103,6 +135,7 @@ const styles = StyleSheet.create({
    justifyContent: 'space-around',
    borderBottomWidth: 0.5,
    borderColor: '#F0F0F0',
+   marginTop:Platform.OS === 'ios' ? 20 : 0,
  },
   tabView: {
     padding: 15,
