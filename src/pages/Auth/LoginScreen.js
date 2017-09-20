@@ -6,9 +6,11 @@ import {
   TextInput,
   StyleSheet
 } from 'react-native';
+import { connect } from 'react-redux';
+import{ loginIn } from '../../actions/user';
 
 
-export default class LoginScreen extends Component {
+class LoginScreen extends Component {
 
 
   static navigationOptions = ({ navigation })=>{
@@ -39,3 +41,9 @@ const style = StyleSheet.create({
     justifyContent:"center",
   }
 })
+
+const mapDispatchToProps = ()=>({
+   logIn:(accesstoken)=>loginIn(accesstoken)
+})
+
+export default connect(null,mapDispatchToProps)(LoginScreen);

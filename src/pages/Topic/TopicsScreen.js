@@ -36,20 +36,19 @@ class TopicsScreen extends  Component {
     fetchTopics = () =>{
     const { getTopics,isPendingTopics } = this.props,
           { tab } = this.state;
-    if(isPendingTopics){
-      return;
-    }
     if(tab == 'all'){
       getTopics({
         mdrender:"false",
         limit:TOPIC_LIMIT,
       })
+    }else{
+      getTopics({
+        mdrender:"false",
+        limit:TOPIC_LIMIT,
+        tab:tab
+      })
     }
-    getTopics({
-      mdrender:"false",
-      limit:TOPIC_LIMIT,
-      tab:tab
-    })
+
   }
   getTabs = () =>{
     let { activeKey, tab } = this.state;

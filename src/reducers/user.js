@@ -12,6 +12,12 @@ const initialState = {
 
 export const userReducer = ( state =initialState,action={})=>{
   switch(action.type){
+    case LOGIN_IN.REQUEST:{
+      return {
+        ...state,
+        accesstoken:action.accesstoken,
+      }
+    }
     case LOGIN_IN.PENDING:
     return {
       ...state,

@@ -57,7 +57,6 @@ export const getTopicDetail = function* (){
     }
   }
   catch(e){
-    console.log(e)
     yield put({
       type: GET_TOPIC_DETAIL.ERROR,
       error:e
@@ -68,6 +67,7 @@ export const getTopicDetail = function* (){
 export const watchRequestTopics = function* (){
   while(true){
      const result = yield take(GET_HOME_TOPICS.REQUEST);
+     console.log("debug")
      yield fork(getTopics,result)
   }
 
