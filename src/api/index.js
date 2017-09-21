@@ -101,3 +101,61 @@ export const fetchMessages = (accesstoken)=> {
         })
       })
 }
+
+/** 
+ * 通过 username 获取用户信息
+ * @param username 需要查询的用户名
+ **/
+
+ export const fetchUserInfoDetail = (username) =>{
+     let url = URL + `/user/${username}`
+     return new Promise((resolve,reject)=>{
+      fetch(url,{
+        method:'GET'
+      })
+      .then((response)=> response.json())
+      .then((res)=>{
+        resolve(res)
+      })
+      .catch((error)=>{
+        reject(error)
+      })
+    })
+  }
+
+
+  /** 
+   *  新建主题
+   *  @param accesstoken 用于校验用户
+   *  @param title 主题标题
+   *  @param context 主体内容
+   *  @param tab  (ask,share,job,dev)
+   *  测试默认发送 dev   
+   *      
+   */
+   export const postTopic = ({accesstoken,title,context,tab}) => {
+     let url = URL + `/topics`;
+     return new Promise((resolve,reject)=>{
+      fetch(url,{
+        method:'POST',
+        headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+        body:JSON.stringify({
+         accesstoken,
+         title,
+         contxt,
+         tab
+       })
+      })
+      .then(response=>response.json())
+      .then((res)=>{
+         resolve(res)
+      })
+      .catch((error)=>{
+        reject(error)
+      })
+    })
+
+   }

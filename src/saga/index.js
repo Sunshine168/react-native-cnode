@@ -1,6 +1,9 @@
-import { watchRequestTopics, watchRequestTopic } from './topic';
+import { watchRequestTopics, watchRequestTopic,  postTopicWatcher } from './topic';
 import { fork, takeEvery, all } from 'redux-saga/effects';
-import { watchAuth } from './user'
+import { watchAuth, watchGetPersonalDetail } from './user';
+import { watchRequestMessages } from './message';
+
+
 function* watchAndLog(getState) {
   yield* takeEvery('*', function* logger(action) {
     console.log('action', action)
@@ -12,7 +15,10 @@ const rootSaga = function* rootSaga(){
      fork(watchRequestTopic),
      fork(watchAndLog),
      fork(watchRequestTopics),
-     fork(watchAuth)
+     fork(watchAuth),
+     fork(watchRequestMessages),
+     fork(watchGetPersonalDetail),
+     fork(postTopicWatcher)
    ])
 }
 

@@ -1,4 +1,4 @@
-import { LOGIN_IN } from '../actions/user.type'
+import { LOGIN_IN, GET_PERSONAL_USERINFO } from '../actions/user.type'
 
 
 const initialState = {
@@ -6,8 +6,12 @@ const initialState = {
   userInfo:{
 
   },
-  isLogining:false,
-  error:""
+  isPendingLogin:false,
+  error:"",
+  isPendingGetPersonalDetail:false,
+  personalUserInfoDetail:{
+
+  }
 }
 
 export const userReducer = ( state =initialState,action={})=>{
@@ -21,13 +25,13 @@ export const userReducer = ( state =initialState,action={})=>{
     case LOGIN_IN.PENDING:
     return {
       ...state,
-      isLogining:true,
+      isPendingLogin:true,
     }
     case LOGIN_IN.SUCCESS:{
       return {
         ...state,
         userInfo:action.payload,
-        isLogining:false,
+        isPendingLogin:false,
         error:""
       }
     }
@@ -35,9 +39,22 @@ export const userReducer = ( state =initialState,action={})=>{
         return {
           ...state,
           error:action.error,
-          isLogining:false
+          isPendingLogin:false
         }
     }
+     case GET_PERSONAL_USERINFO.PENDING:{
+       return {
+           ...state,
+           isPendingGetPersonalDetail:true,
+       }
+     }
+     case GET_PERSONAL_USERINFO.SUCCESS:{
+       return {
+         ...state,
+         isPendingGetPersonalDetail:false,
+         personalUserInfoDetail:action.payload.data
+       }
+     }
     default:
     return state
   }

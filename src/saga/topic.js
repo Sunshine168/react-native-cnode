@@ -1,6 +1,6 @@
-import { fetchTopics, fetchTopicDetail } from '../api/index';
+import { fetchTopics, fetchTopicDetail, postTopic} from '../api/index';
 import { put, select, call, take, fork, takeLatest } from 'redux-saga/effects';
-import { GET_HOME_TOPICS, GET_TOPIC_DETAIL } from '../actions/topic.type'
+import { GET_HOME_TOPICS, GET_TOPIC_DETAIL, POST_TOPIC } from '../actions/topic.type'
 export const getTopics =  function* (params){
    try{
      const page = yield select(state=>state.topic.page)
@@ -83,4 +83,32 @@ export const watchRequestTopic = function* (){
     const result = yield take(GET_TOPIC_DETAIL.REQUEST)
     yield fork(getTopicDetail,result.id)
   }
+}
+
+
+export const postTopicWatcher = function* (){
+     try {
+      const  { title,context,tab }  = yield take(POST_TOPIC.REQUEST),
+             { accesstoken }= yield select(state => state.user)
+
+      yield put({
+        type:POST_TOPIC.PENDING  
+      })
+       
+      const result = yield call(postTopic,{
+        title,
+        context,
+        tab
+      })
+
+      yield put({
+        type: POST_TOPIC.SUCCESS,    
+      }) 
+
+     } catch (error) {
+      yield put({
+        type: POST_TOPIC.ERROR,
+        error
+      })
+     }
 }

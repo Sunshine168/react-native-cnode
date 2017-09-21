@@ -17,7 +17,7 @@ const TopicLabelContext = {
   dev:{text:"测试",backgroundColor:"#FF6A6A"},
   default:{text:"默认",backgroundColor:"#7B68EE"},
 }
-const Deaful_tTab = 'default';
+const Deaful_Tab = 'default';
 export const TopicLabel = ( { type } )=>{
     let { good,top,tab } = type,
         topicLabelContext,
@@ -34,7 +34,7 @@ export const TopicLabel = ( { type } )=>{
        if(tab){
           realTab = tab
        }else{
-         realTab = Deaful_tTab;
+         realTab = Deaful_Tab;
        }
        topicLabelContext = TopicLabelContext[realTab];
       }

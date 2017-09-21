@@ -1,8 +1,8 @@
 //action type
 import{
   GET_HOME_TOPICS,
-  ADD_TOPICS_PAGE,
-  GET_TOPIC_DETAIL
+  GET_TOPIC_DETAIL,
+  POST_TOPIC,
 }from './topic.type'
 
 
@@ -19,11 +19,16 @@ export const getTopics = (params) => {
   }
 }
 
-export const addPage = ()=>{
-  return {type:ADD_TOPICS_PAGE}
-}
 
 export const getTopicDetail = (id)=>({
     type:GET_TOPIC_DETAIL.REQUEST,
     id:id
+  })
+
+
+  export const postTopicRequest = ({accesstoken,tab,title,context})=>({
+    type:POST_TOPIC.REQUEST,
+    accesstoken,
+    tab,
+    context,
   })
