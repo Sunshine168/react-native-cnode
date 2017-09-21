@@ -11,7 +11,9 @@ import { StackNavigator } from 'react-navigation';
 import { Cnode } from './routes';
 import { Provider } from 'react-redux';
 import { configureStore } from './store';
-import rootSaga from './src/saga/index'
+import rootSaga from './src/saga/index';
+import { addNavigationHelpers } from 'react-navigation';
+import { connect } from 'react-redux';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -32,6 +34,20 @@ const styles = StyleSheet.create({
 });
 const store = configureStore;
 store.runSaga(rootSaga)
+const CnodeContianer = (props)=>{
+  return (
+    <Cnode 
+    navigation={addNavigationHelpers({
+      dispatch: props.dispatch,
+      state: props.nav,
+    })}
+   />
+  )
+}
+const mapStateToProps = (state)=>({
+  nav:state.nav
+})
+const CnodeWithNavigationState = connect(mapStateToProps)(CnodeContianer);
 class App extends Component {
    componentWillMount() {
      persistStore(
@@ -44,7 +60,7 @@ class App extends Component {
    render(){
       return(
         <Provider store={store}>
-          <Cnode/>
+          <CnodeWithNavigationState/>
         </Provider>
       )
    }
