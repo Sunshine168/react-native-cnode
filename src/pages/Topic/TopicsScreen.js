@@ -31,7 +31,7 @@ class TopicsScreen extends  Component {
     }
   }
    componentDidMount(){
-    this.fetchTopics()
+    // this.fetchTopics()
     }
     fetchTopics = () =>{
     const { getTopics,isPendingTopics } = this.props,

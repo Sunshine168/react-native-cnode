@@ -8,17 +8,12 @@ import NotificationsScreen from './src/pages/Notification/NotificationsScreen';
 import PersonalScreen from './src/pages/Personal/PersonalScreen';
 import { Icon } from 'react-native-elements';
 import LoginScreen  from './src/pages/Auth/LoginScreen'
+import { connect } from 'react-redux'
+import { addNavigationHelpers } from 'react-navigation';
 
-// const NotificationsStackNavigator = StackNavigator({
-//    Notification:{
-//      screen:NotificationsScreen
-//    },
-//    Login:{
-//      screen:LoginScreen,
-//    }
-// })
 
-const HomeTabNavigator = TabNavigator({
+
+export const HomeTabNavigator = TabNavigator({
   Topic:{
      screen:TopicsScreen,
      navigationOptions: {
@@ -70,6 +65,23 @@ const HomeTabNavigator = TabNavigator({
     },
   }
 })
+const HomeTabNavigatorContainer = (props)=>{
+  console.log()
+  return <HomeTabNavigator
+      navigation={addNavigationHelpers({
+      dispatch: props.dispatch,
+      state: props.tabNav,
+    })}   
+  />
+}
+const mapStateToProps = ({ tabNav })=>{
+  return {
+    tabNav:tabNav
+  }
+}
+
+const HomeTabNavigatorWithState = connect(mapStateToProps)(HomeTabNavigatorContainer)
+
 
 //main routes
 export const Cnode  = StackNavigator({
@@ -83,7 +95,7 @@ export const Cnode  = StackNavigator({
      screen:LoginScreen,
    },
    Home:{
-     screen:HomeTabNavigator,
+     screen:HomeTabNavigatorWithState,
      navigationOptions: {
        header: null,
      },
@@ -99,10 +111,3 @@ export const Cnode  = StackNavigator({
   },
 }
 )
-
-// const MainNavigator = StackNavigator({
-//   Topic:{
-//     screen:TopicsScreen,
-//     headerMode: 'screen',
-//   }
-// })

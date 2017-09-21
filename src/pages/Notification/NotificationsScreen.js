@@ -20,8 +20,15 @@ const style = StyleSheet.create({
 })
 
 class NotificationsScreen extends Component {
-  componentDidMount(){
-   console.log("...")
+  componentWillReceiveProps(nextProps){
+    const { user, currentRouteName } = nextProps;
+    if(currentRouteName == 'Notification'){
+      if(!user.userInfo){
+        console.log("unlogin")
+     }else{
+       console.log("login")
+     }
+    }
   }
   render(){
     const { user, navigation } = this.props;
@@ -42,6 +49,7 @@ class NotificationsScreen extends Component {
 
 const mapStateToProps = (state)=>({
   user:state.user,
+  currentRouteName:state.tabNav.currentRouteName,
 })
 
 export default connect(mapStateToProps)(NotificationsScreen);
