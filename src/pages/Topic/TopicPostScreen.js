@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet,Picker} from 'react-native';
 import {FormLabel, FormInput, FormValidationMessage} from 'react-native-elements';
 import { TabHeaderBar } from '../../components/TabHeaderBar';
 import { Button } from 'react-native-elements';
@@ -20,7 +20,7 @@ const style = StyleSheet.create({
   }
 })
 
-export default class TopicPostScreen extends Component {
+ class TopicPostScreen extends Component {
   static navigationOptions = {
     title: '发帖'
   }
@@ -30,35 +30,93 @@ export default class TopicPostScreen extends Component {
       title: "",
       context: "",
       titleValidationMessage: "",
-      contextValidationMessage: ""
+      contextValidationMessage: "",
+      tab:"dev"
     }
   }
+  _postTopic = () =>{
+ 
+     const {
+       title,
+       context,
+       tab,
+     } = this.state;
+     const {
+      postTopicRequest
+     } = this.props;
+     if(title.trim().length == 0){
+        this.setState({
+          titleValidationMessage:"标题不能为空"
+        })
+     }else{
+       this.setState({
+        titleValidationMessage:""
+       })
+     }
+     if(context.trim().length == 0){
+          this.setState({
+            contextValidationMessage:"内容不能为空",
+          })
+     }else{
+        this.setState({
+          contextValidationMessage:""
+        })
+     }
+     postTopicRequest({
+      title,
+      context,
+      tab,
+     })
+  }
   render() {
+    const {
+      titleValidationMessage,
+      contextValidationMessage
+    }  = this.state;
     return (
       <View style={style.container}>
         <TabHeaderBar title={"发帖"}/>
         <View style={style.fromContainer}>
           <FormLabel>标题</FormLabel>
-          <FormInput onChangeText={(text) => this.setState({title: text})}/>
-          {this.state.titleValidationMessage
+          <FormInput 
+          inputStyle={{
+            fontSize:20,
+          }}
+          onChangeText={(text) => this.setState({title: text})}
+          placeholde = {"请输入标题"}
+          />
+          {titleValidationMessage 
             ? <FormValidationMessage>{titleValidationMessage}</FormValidationMessage>
             : null
 }
           <FormLabel>内容</FormLabel>
           <FormInput 
+          inputStyle={{
+            fontSize:18,
+            height:100,
+          }}
           onChangeText={(text) => this.setState({text: text
-          
           })}
           multiline = {true}
+          placeholde = {"请输入内容"}
           /> 
-          {this.state.contextValidationMessage
+          {contextValidationMessage
             ? <FormValidationMessage>{contextValidationMessage}</FormValidationMessage>
             : null
-}       
+} 
+<FormLabel>帖子类型</FormLabel>     
+<Picker
+  selectedValue={this.state.tab}
+  onValueChange={(tab) => this.setState({tab})}>
+  <Picker.Item label="测试" value="dev" />
+  <Picker.Item label="问答" value="ask" />
+  <Picker.Item label="分享" value="share" />
+</Picker>  
       <View style={style.control}>
       <Button
       icon={{name: 'squirrel', type: 'octicon'}}
       title='OCTICON' 
+      onPress = {this._postTopic}
       />
         </View>
         </View>
@@ -68,6 +126,10 @@ export default class TopicPostScreen extends Component {
 }
 
 
-const mapDispatchToProp = (dispatch) =>({
+const mapDispatchToProps = (dispatch) =>({
   postTopicRequest:(params)=>dispatch(postTopicRequest(...params))
 })
+const mapStateToProps = (state)=>({
+  isLogin:state.user.userInfo.success,
+})
+export default connect(mapStateToProps,mapDispatchToProps)(TopicPostScreen)
