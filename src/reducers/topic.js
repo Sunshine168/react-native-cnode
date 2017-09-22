@@ -2,6 +2,7 @@ import {
   GET_HOME_TOPICS,
   ADD_TOPICS_PAGE,
   GET_TOPIC_DETAIL,
+  POST_TOPIC,
 } from '../actions/topic.type';
 
 
@@ -12,6 +13,8 @@ const initialState = {
   currentTopicDetailId:null,
   isPendingTopics: false,
   isPendingTopic: false,
+  isPendingPostTopic:false,
+  isPostTopicSuccess:false,
   error:'',
 
 }
@@ -55,6 +58,23 @@ export const topicReducer = ( state = initialState, action={}) => {
     return {
       ...state,
       error:action.error,
+    }
+    case POST_TOPIC.PENDING:
+    return {
+      ...state,
+      isPendingPostTopic:true,
+    }
+    case POST_TOPIC.SUCCESS:
+    return {
+      ...state,
+      isPendingPostTopic:false,
+      isPostTopicSuccess:true,
+    }
+    case POST_TOPIC.ERROR:
+    return {
+      ...state,
+      error:action.error,
+      isPendingPostTopic:false,
     }
     default:
     return state;

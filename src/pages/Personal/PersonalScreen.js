@@ -8,6 +8,7 @@ import { ListItem, Button } from 'react-native-elements';
 import { TabHeaderBar } from '../../components/TabHeaderBar';
 import { getPersonalUserInfo } from '../../actions/user';
 import { connect } from 'react-redux';
+import { loginOut } from '../../actions/user';
 import moment from 'moment';
 const LIST_DATA = [{
   leftIcon:{
@@ -52,6 +53,19 @@ class PersonalScreen extends Component {
    componentDidMount(){
      const { getPersonalUserInfo } = this.props;
      getPersonalUserInfo();
+   }
+   componentWillReceiveProps = (nextProps) => {
+    const { isLogin, navigation, currentRouteName } = this.props;
+    if(currentRouteName == 'Personal'){
+      if(!isLogin){
+        navigation.navigate('Login');
+        console.log("need jump")
+      }
+    }
+   }
+   _loginOut = ()=>{
+     const { loginOut } = this.props;
+     loginOut();
    }
   render(){
     const { personalUserInfoDetail } = this.props;
@@ -121,7 +135,8 @@ class PersonalScreen extends Component {
       />
       </View>
       <View style={style.controls}>
-      <Button
+  <Button
+  onPress={this._loginOut}  
   backgroundColor={"#FA8072"}
   icon={{name: 'envira', type: 'font-awesome'}}
   title='注销' 
@@ -135,10 +150,13 @@ class PersonalScreen extends Component {
 
 const mapStateToProps =  (state) => ({
   personalUserInfoDetail:state.user.personalUserInfoDetail,
+  isLogin:state.user.userInfo.success,
+  currentRouteName:state.tabNav.currentRouteName,
 })
 
 const mapDispatchToProps = (dispatch)=>({
-   getPersonalUserInfo:()=>dispatch(getPersonalUserInfo())
+   getPersonalUserInfo:()=>dispatch(getPersonalUserInfo()),
+   loginOut:()=>dispatch(loginOut()),
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(PersonalScreen)

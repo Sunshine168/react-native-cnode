@@ -4,7 +4,6 @@ import { GET_MESSAGES } from '../actions/message.type';
 import { fetchMessages } from '../api/index';
 const getMessages = function* (params){
   try{ 
-       console.log("enter")
     //    const user = yield take(LOGIN_IN.SUCCESS)
       //
       const accesstoken = yield select(state=>state.user.accesstoken);

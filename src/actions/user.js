@@ -11,3 +11,6 @@ export const getPersonalUserInfo = ()=>({
   type: GET_PERSONAL_USERINFO.REQUEST
 })
 
+export const loginOut = ()=>({
+  type:LOGIN_OUT.REQUEST,
+})

@@ -29,15 +29,19 @@ class NotificationsScreen extends Component {
     }
   }
   renderReadedMessageItem = (message) =>{
+    const { navigation } = this.props;
      return (
      <ReadedMessageItem
         message={message.item}
+        navigation={navigation}
      />)
   }
   renderUnReadMessageItem = (message) =>{
+    const { navigation } = this.props;
     return (
       <UnReadMessageItem
          message={message.item}
+         navigation={navigation}
       />)
   }
   render(){

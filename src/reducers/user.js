@@ -1,4 +1,4 @@
-import { LOGIN_IN, GET_PERSONAL_USERINFO } from '../actions/user.type'
+import { LOGIN_IN, GET_PERSONAL_USERINFO, LOGIN_OUT } from '../actions/user.type'
 
 
 const initialState = {
@@ -53,6 +53,15 @@ export const userReducer = ( state =initialState,action={})=>{
          ...state,
          isPendingGetPersonalDetail:false,
          personalUserInfoDetail:action.payload.data
+       }
+     }
+     case LOGIN_OUT.REQUEST:{
+       return {
+         ...state,
+        userInfo:{
+          ...state.userInfo,
+        success:false,
+        }
        }
      }
     default:

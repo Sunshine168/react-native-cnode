@@ -86,29 +86,40 @@ export const watchRequestTopic = function* (){
 }
 
 
-export const postTopicWatcher = function* (){
+export const postTopicRequest = function* (params){
      try {
-      const  { title,context,tab }  = yield take(POST_TOPIC.REQUEST),
-             { accesstoken }= yield select(state => state.user)
-
+      const { accesstoken }= yield select(state => state.user);
       yield put({
         type:POST_TOPIC.PENDING  
       })
-       
+      
       const result = yield call(postTopic,{
-        title,
-        context,
-        tab
+          ...params,
+          accesstoken,
       })
-
-      yield put({
-        type: POST_TOPIC.SUCCESS,    
-      }) 
-
+      if(result.success){
+        yield put({
+          type: POST_TOPIC.SUCCESS,    
+        }) 
+      }else{
+        yield put({
+          type: POST_TOPIC.ERROR,
+          error:result.error_msg
+        })
+      }
      } catch (error) {
       yield put({
         type: POST_TOPIC.ERROR,
         error
       })
      }
+     
 }
+
+export const postTopicWatcher = function* (){
+  while(true){
+    const  params = yield take(POST_TOPIC.REQUEST);
+    yield fork(postTopicRequest,params)
+  }
+}
+

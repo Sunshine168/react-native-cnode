@@ -133,7 +133,7 @@ export const fetchMessages = (accesstoken)=> {
    *  测试默认发送 dev   
    *      
    */
-   export const postTopic = ({accesstoken,title,context,tab}) => {
+   export const postTopic = ({accesstoken,title,content,tab}) => {
      let url = URL + `/topics`;
      return new Promise((resolve,reject)=>{
       fetch(url,{
@@ -145,7 +145,7 @@ export const fetchMessages = (accesstoken)=> {
         body:JSON.stringify({
          accesstoken,
          title,
-         contxt,
+         content,
          tab
        })
       })

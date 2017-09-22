@@ -5,6 +5,7 @@ import { TabHeaderBar } from '../../components/TabHeaderBar';
 import { Button } from 'react-native-elements';
 import { postTopicRequest } from '../../actions/topic';
 import { connect } from 'react-redux'; 
+import Toast from 'react-native-root-toast';
 const style = StyleSheet.create({
   container: {
     flex: 1,
@@ -28,17 +29,29 @@ const style = StyleSheet.create({
     super(props)
     this.state = {
       title: "",
-      context: "",
+      content: "",
       titleValidationMessage: "",
-      contextValidationMessage: "",
-      tab:"dev"
+      contentValidationMessage: "",
+      tab:"dev",
+      toastVisible:false,
     }
   }
+  componentWillReceiveProps = (nextProps) => {
+      const { isPostTopicSuccess } = nextProps;
+      console.log(isPostTopicSuccess)
+      if( isPostTopicSuccess ){
+        this.setState({
+          toastVisible:true,
+        })
+        console.log(isPostTopicSuccess)
+      }
+  }
+  
   _postTopic = () =>{
  
      const {
        title,
-       context,
+       content,
        tab,
      } = this.state;
      const {
@@ -53,25 +66,25 @@ const style = StyleSheet.create({
         titleValidationMessage:""
        })
      }
-     if(context.trim().length == 0){
+     if(content.trim().length == 0){
           this.setState({
-            contextValidationMessage:"内容不能为空",
+            contentValidationMessage:"内容不能为空",
           })
      }else{
         this.setState({
-          contextValidationMessage:""
+          contentValidationMessage:""
         })
      }
      postTopicRequest({
       title,
-      context,
+      content,
       tab,
      })
   }
   render() {
     const {
       titleValidationMessage,
-      contextValidationMessage
+      contentValidationMessage
     }  = this.state;
     return (
       <View style={style.container}>
@@ -95,13 +108,13 @@ const style = StyleSheet.create({
             fontSize:18,
             height:100,
           }}
-          onChangeText={(text) => this.setState({text: text
+          onChangeText={(text) => this.setState({content: text
           })}
           multiline = {true}
           placeholde = {"请输入内容"}
           /> 
-          {contextValidationMessage
-            ? <FormValidationMessage>{contextValidationMessage}</FormValidationMessage>
+          {contentValidationMessage
+            ? <FormValidationMessage>{contentValidationMessage}</FormValidationMessage>
             : null
 } 
 <FormLabel>帖子类型</FormLabel>     
@@ -120,6 +133,13 @@ const style = StyleSheet.create({
       />
         </View>
         </View>
+        <Toast
+            visible={this.state.toastVisible}
+            position={20}
+            shadow={false}
+            animation={false}
+            hideOnPress={true}
+        >发帖成功</Toast>
       </View>
     )
   }
@@ -127,9 +147,10 @@ const style = StyleSheet.create({
 
 
 const mapDispatchToProps = (dispatch) =>({
-  postTopicRequest:(params)=>dispatch(postTopicRequest(...params))
+  postTopicRequest:(params)=>dispatch(postTopicRequest(params))
 })
 const mapStateToProps = (state)=>({
   isLogin:state.user.userInfo.success,
+  isPostTopicSuccess:state.topic.isPostTopicSuccess,
 })
 export default connect(mapStateToProps,mapDispatchToProps)(TopicPostScreen)

@@ -36,7 +36,7 @@ class App extends Component {
    componentWillMount() {
      persistStore(
        store,
-       { storage: AsyncStorage,blacklist: ['topic']},
+       { storage: AsyncStorage,blacklist: ['topic','tabNav']},
        () => {
            this.setState({ rehydrated: true });
        });

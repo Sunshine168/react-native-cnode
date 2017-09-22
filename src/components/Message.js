@@ -10,10 +10,10 @@ import { Icon, ListItem } from 'react-native-elements';
 
 
 class Message extends Component  {
-    _toTopicDetail= ()=>{
-       const { navigation, topic } = this.props
+    _toTopicDetail = ()=>{
+       const { navigation, message } = this.props
        navigation.navigate('TopicDetail',{
-        id:topic.id,
+        id:message.topic.id,
       })   
     }
     render(){
@@ -31,7 +31,9 @@ class Message extends Component  {
             subtitle = "@了你"
         }
         return (
-           <TouchableOpacity>
+           <TouchableOpacity
+            onPress={this._toTopicDetail}
+           >
           <ListItem
             roundAvatar
             key={id}
@@ -46,11 +48,13 @@ class Message extends Component  {
 
 
 export const  UnreadMessageItem = (props)=>{
-   const  messageItem = props.message; 
+   const  messageItem = props.message,
+          navigation  = props.navigation;
         return (
             <View style={style.container}>
                <Message
                  message={messageItem}
+                 navigation={navigation}
                />
                <Button
                 title={"点击标记阅读"}
@@ -62,11 +66,13 @@ export const  UnreadMessageItem = (props)=>{
 }
 
 export const  ReadedMessageItem = (props)=>{
-    const  messageItem = props.message; 
+    const  messageItem = props.message,
+           navigation  = props.navigation;
          return (
              <View style={style.container}>
                 <Message
                 message={messageItem}
+                navigation={navigation}
                 />
              </View>
          )

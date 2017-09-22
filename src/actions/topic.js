@@ -26,9 +26,7 @@ export const getTopicDetail = (id)=>({
   })
 
 
-  export const postTopicRequest = ({accesstoken,tab,title,context})=>({
+  export const postTopicRequest = (params)=>({
     type:POST_TOPIC.REQUEST,
-    accesstoken,
-    tab,
-    context,
+    ...params
   })
