@@ -121,7 +121,7 @@ const style = StyleSheet.create({
 
 const mapStateToProps = (state)=>({
   user:state.user,
-  currentRouteName:state.tabNav.currentRouteName,
+  currentRouteName:state.tabNav.routeName,
   has_read_messages:state.message.has_read_messages,
   hasnot_read_messages:state.hasnot_read_messages,
 })

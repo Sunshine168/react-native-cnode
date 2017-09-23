@@ -11,13 +11,6 @@ const getMessages = function* (params){
         type:GET_MESSAGES.PENDING   
       })
      const result =  yield call(fetchMessages,accesstoken);
-     //data process
-     let process_has_read_messages = result.has_read_messages.map((item)=>{
-        return {
-            key:item.id,
-            ...item,
-        }
-     })
      yield put({
          type:GET_MESSAGES.SUCCESS,
          payload:result,

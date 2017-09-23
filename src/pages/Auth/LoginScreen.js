@@ -37,7 +37,8 @@ class LoginScreen extends Component {
   componentDidMount(){
       const { user, navigation } = this.props;
       if(user.userInfo.success){
-        resetNavigationTo('Home', navigation);
+        // resetNavigationTo('Home', navigation);
+        navigation.navigate('Home')
       }
   }
   loginIn = () =>{

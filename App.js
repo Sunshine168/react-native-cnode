@@ -8,9 +8,9 @@ import {
 } from 'react-native';
 import { persistStore } from 'redux-persist';
 import { StackNavigator } from 'react-navigation';
-import { Cnode } from './routes';
+import  Cnode  from './routes.root';
 import { Provider } from 'react-redux';
-import { configureStore } from './store';
+import { configureStore } from './store.root';
 import rootSaga from './src/saga/index';
 const styles = StyleSheet.create({
   container: {
@@ -36,7 +36,7 @@ class App extends Component {
    componentWillMount() {
      persistStore(
        store,
-       { storage: AsyncStorage,blacklist: ['topic','tabNav']},
+       { storage: AsyncStorage,blacklist: ['topic','tabNav','globalNav']},
        () => {
            this.setState({ rehydrated: true });
        });
