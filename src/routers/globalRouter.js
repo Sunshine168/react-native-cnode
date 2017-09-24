@@ -7,12 +7,11 @@ import { Icon } from 'react-native-elements';
 import LoginScreen  from '../pages/Auth/LoginScreen'
 import { connect } from 'react-redux'
 import { addNavigationHelpers } from 'react-navigation';
-
+import TopicsScreen from '../pages/Topic/TopicsScreen';
 
 
 //main routes
  export const Cnode  = StackNavigator({
-  
    Welcome:{
      screen:WelcomeScreen,
      navigationOptions: {
@@ -22,6 +21,9 @@ import { addNavigationHelpers } from 'react-navigation';
    Login:{
      screen:LoginScreen,
    },
+   Topics:{
+    screen:TopicsScreen
+  },
    Home:{
      screen:HomeTabNavigatorWithState,
      navigationOptions: {
@@ -47,7 +49,6 @@ const CnodeStackNavigatorContainer = (props) => {
       dispatch: props.dispatch,
       state: props.globalNav,
       })}
-      screenProps={{ rootNavigation: props.navigation }}
     />
 }
 
@@ -55,6 +56,6 @@ const mapStateToProps = ({globalNav}) => ({
     globalNav
   })
   
-const CnodeStackNavigatorWithState = connect(mapStateToProps)(Cnode);
+const CnodeStackNavigatorWithState = connect(mapStateToProps)(CnodeStackNavigatorContainer);
 
 export default CnodeStackNavigatorWithState;

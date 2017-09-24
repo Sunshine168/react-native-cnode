@@ -18,16 +18,6 @@ class NotificationsScreen extends Component {
       const { getMessages } = this.props;
       getMessages();
   }
-  componentWillReceiveProps(nextProps){
-    const { user, currentRouteName } = nextProps;
-    if(currentRouteName == 'Notification'){
-      if(!user.userInfo){
-        console.log("unlogin")
-     }else{
-       console.log("login")
-     }
-    }
-  }
   renderReadedMessageItem = (message) =>{
     const { navigation } = this.props;
      return (

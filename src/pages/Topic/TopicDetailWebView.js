@@ -8,32 +8,33 @@ import {
   ActivityIndicator,
   ScrollView,
   WebView,
-  Button
+  Button,
+  TextInput,
 } from 'react-native';
 import { getTopicDetail } from '../../actions/topic';
 import { TopicLabel } from '../../components/TopicListItem';
 import { connect } from 'react-redux';
-import { MarkdownView } from 'react-native-markdown-view'
-// import { URL } from '../../api/index'
+import { MarkdownView } from 'react-native-markdown-view';
+import { FormLabel, FormInput, FormValidationMessage, Icon } from 'react-native-elements';
 const URL = "https://cnodejs.org"
 class TopicDetailScreen extends Component {
   static navigationOptions = ({ navigation })=>{
+  console.log(navigation)
   return {
-    headerRight:(
-      <Button
-        title={"回帖"}
-        onPress={()=>{console.log("")}}
-      />
-)
   }
 }
   constructor(props){
     super(props)
     this.state = {
-      url:""
+      url:"",
+      isReplying:false,
     }
   }
-injectJS = () => {
+  _reload=()=> {
+    console.log(this)
+        this.webview.reload();
+    }
+_injectJS = () => {
   const script = `
     var navBar = $('.navbar')[0];
         $(navBar).hide()
@@ -53,6 +54,14 @@ componentDidMount(){
           url:url,
           scalesPageToFit:true,
         })
+        getTopicDetail(id);
+}
+_setReplying = ()=>{
+  this.setState({
+    isReplying:true,
+  })
+  //getTopicDetail
+  
 }
 _getHeader(){
       let {
@@ -83,12 +92,6 @@ _getHeader(){
           </View>
         </TouchableOpacity>
         <TouchableOpacity>
-          <Image
-            style={
-              is_collect ? style.collectLogo : style.collectedLogo
-            }
-            source={require('../../assets/collection.png')}
-          />
         </TouchableOpacity>
       </View>
     )
@@ -111,42 +114,10 @@ _getHeader(){
     )
    }
     render(){
-      // const { topic, isPendingTopic } = this.props;
-      // if(!topic){
-      //   return (
-      //
-      //       <ActivityIndicator
-      //         size = 'large'
-      //       />
-      //   )
-      //
-      // }
-      // let {
-      //   title,
-      //   content,
-      //   good,
-      //   top,
-      //   tab,
-      //   visit_count,
-      //   create_at,
-      //   replies,
-      //   author
-      // } = topic;
+      const { replying } = this.state,
+      { topic } = this.props;
       return (
         <View style={style.container}>
-          {/* <View style={style.wrapper}>
-            <View style={style.statusBar}></View>
-            {this._getHeader()}
-            <Text style={style.title}>{title}</Text>
-            <ScrollView
-              style={style.contentWrapper}
-            >
-              <Text style={style.content}>
-            <MarkdownView>{content}</MarkdownView>
-              </Text>
-              {this._getFooter()}
-            </ScrollView>
-          </View> */}
           <WebView
             ref={webview => { this.webview = webview; }}
             source={{
@@ -157,9 +128,66 @@ _getHeader(){
             domStorageEnabled={true}
             javaScriptEnabled={true}
             style={style.contenWeb}
-            onLoad={this.injectJS}
+            onLoad={this._injectJS}
             scalesPageToFit={this.state.scalesPageToFit}
           />
+        { ! replying 
+        ? <View style={style.controlGroup}>
+          {topic.is_collect?  
+          <TouchableOpacity style={style.iconContainer}>
+          <Icon
+            name='star'
+            type='font-awesome'
+            color='#FF6347'
+            size={32}
+            />
+          </TouchableOpacity> 
+          :
+          <TouchableOpacity style={style.iconContainer}>
+          <Icon
+            name='star-o'
+            type='font-awesome'
+            color='#BEBEBE'
+            size={32}
+            />
+          </TouchableOpacity>}
+
+            <TouchableOpacity style={style.iconContainer}>
+            <Icon
+            name='message-outline'
+            type='material-community'
+            color='#BEBEBE'
+            size={32}
+            iconStyle={style.iconContainer}
+            />
+            </TouchableOpacity>
+            <TouchableOpacity style={style.reloadContainer} onPress={this._reload}>
+             <Icon
+            name='refresh'
+            type='material-community'
+            color='#1771fb'
+            size={32}
+     />
+       </TouchableOpacity>
+           
+        </View>
+        :<View style={style.controlGroup}>
+         <View style={style.replyFrom}>
+         <FormInput
+          onChangeText={this._reply}
+          />
+          {/* <FormValidationMessage>{this.state.replyError}</FormValidationMessage> */}
+         </View>
+         <Button
+          title='回帖' 
+          onPress = {()=>{
+
+          }}
+  />
+          </View>
+          }
+
+        
         </View>
       )
     }
@@ -169,10 +197,11 @@ const style = StyleSheet.create({
   container:{
     flex:1,
     backgroundColor:"#fff",
+    flexDirection:"column",
   },
   wrapper:{
     flex:1,
-    flexDirection:"column",
+    
   },
   header:{
     // flex:1,
@@ -217,6 +246,24 @@ const style = StyleSheet.create({
   contentWrapper:{
     paddingLeft:20,
     paddingRight:20,
+  },
+  replyFrom:{
+    flex:1,
+    height:40,
+  },
+  controlGroup:{
+    position:"relative",
+    padding:10,
+    flexDirection:'row',
+    justifyContent:"flex-start",
+  },
+  iconContainer:{
+    marginLeft:10,
+  },
+  reloadContainer:{
+    position:"absolute",
+    top:10,
+    right:10,
   }
 })
 

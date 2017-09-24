@@ -37,13 +37,20 @@ export const getTopics =  function* (params){
    }
 }
 
-export const getTopicDetail = function* (){
+export const getTopicDetail = function* (currentTopicDetailId){
   try{
     yield put({
       type:GET_TOPIC_DETAIL.PENDING
     });
-    const { currentTopicDetailId, isPendingTopics } = yield select(state=>state.topic);
-    const data = yield call(fetchTopicDetail,currentTopicDetailId);
+    const  user = yield select(state=>state.user)
+    let data;
+    if(user.userInfo.success){
+      //已经登录就附带token过去
+      let { accesstoken } = user;
+      data = yield call(fetchTopicDetail,currentTopicDetailId,accesstoken);
+    }else{
+      data = yield call(fetchTopicDetail,currentTopicDetailId);
+    }
     if(data.success == 1){
        yield put({
          type: GET_TOPIC_DETAIL.SUCCESS,
@@ -57,6 +64,7 @@ export const getTopicDetail = function* (){
     }
   }
   catch(e){
+    console.log(e)
     yield put({
       type: GET_TOPIC_DETAIL.ERROR,
       error:e

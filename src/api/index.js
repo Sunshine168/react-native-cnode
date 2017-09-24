@@ -159,3 +159,49 @@ export const fetchMessages = (accesstoken)=> {
     })
 
    }
+
+
+
+   /**
+    *  @param topicId 主题id
+    *  @param accesstoken 用户的accesstoken
+    *  @param content 评论的主体内容
+    *  @param reply_id 对评论的回复(可省略)
+   */
+
+
+   export const postReply = ({topicId,accesstoken,content,replyId})=>{
+       
+       let replyData = {},
+            url = `/topic/${topicId}/replies`;
+       if(replyId){
+           replyData = {
+             accesstoken:accesstoken,
+             content:content,
+             reply_id:replyId
+           }
+       }else{
+        replyData = {
+          accesstoken:accesstoken,
+          content:content,
+        }
+       }
+       return new Promise((resolve,reject)=>{
+        fetch(url,{
+          method:'POST',
+          headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+          body:JSON.stringify(replyData)
+        })
+        .then(response=>response.json())
+        .then((res)=>{
+           resolve(res)
+        })
+        .catch((error)=>{
+          reject(error)
+        })
+      })
+
+   }

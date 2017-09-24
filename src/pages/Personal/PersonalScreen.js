@@ -50,22 +50,33 @@ class PersonalScreen extends Component {
   static navigationOptions = {
     title: '个人',
   }
+  constructor(props){
+    super(props);
+    this.state = {
+      had_been_Props:false,
+    }
+  }
    componentDidMount(){
      const { getPersonalUserInfo } = this.props;
      getPersonalUserInfo();
    }
-   componentWillReceiveProps = (nextProps) => {
-    const { isLogin, navigation, currentRouteName } = this.props;
-    if(currentRouteName == 'Personal'){
-      if(!isLogin){
-        navigation.navigate('Login');
-        console.log("need jump")
-      }
-    }
-   }
+  //  componentWillReceiveProps = (nextProps) => {
+  //   const { isLogin, navigation, index } = this.props;
+  //   let { had_been_Props } = this.state;
+  //   if(index == 0 && !had_been_Props){
+  //       this.setState({
+  //         had_been_Props:true,
+  //       })
+  //   }else{
+  //     if(had_been_Props && (index == 0 || index == 3) ){
+  //       navigation.navigate('Login');
+  //     }
+  //   }
+  //  }
    _loginOut = ()=>{
-     const { loginOut } = this.props;
+     const { loginOut, navigation } = this.props;
      loginOut();
+     navigation.navigate('Login')
    }
   render(){
     const { personalUserInfoDetail } = this.props;
@@ -151,7 +162,7 @@ class PersonalScreen extends Component {
 const mapStateToProps =  (state) => ({
   personalUserInfoDetail:state.user.personalUserInfoDetail,
   isLogin:state.user.userInfo.success,
-  currentRouteName:state.tabNav.currentRouteName,
+  index:state.tabNav.index,
 })
 
 const mapDispatchToProps = (dispatch)=>({

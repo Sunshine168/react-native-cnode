@@ -22,7 +22,7 @@ class LoginScreen extends Component {
       <Button
         title={"暂不登录"}
         onPress={()=>{
-          navigation.navigate('Home')
+          navigation.navigate('Topics')
         }}
       />
 )
@@ -35,11 +35,18 @@ class LoginScreen extends Component {
     }
   }
   componentDidMount(){
-      const { user, navigation } = this.props;
-      if(user.userInfo.success){
+      const { isLoginIn, navigation } = this.props;
+      if(isLoginIn){
         // resetNavigationTo('Home', navigation);
         navigation.navigate('Home')
       }
+  }
+  componentWillReceiveProps(nextProps) {
+    const { isLoginIn } = nextProps;
+    if(isLoginIn){
+      //  resetNavigationTo('Home', navigation);
+      navigation.navigate('Home')
+    }
   }
   loginIn = () =>{
     const { loginIn } = this.props;
@@ -82,7 +89,7 @@ const style = StyleSheet.create({
 })
 
 const mapStateToProps = (state)=>({
-  user:state.user
+  isLoginIn:state.user.userInfo.success,
 })
 const mapDispatchToProps = (dispatch)=>({
    loginIn:(accesstoken)=>dispatch(loginIn(accesstoken))
