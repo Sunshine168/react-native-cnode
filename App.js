@@ -4,7 +4,8 @@ import {
   Text,
   StyleSheet,
   AppRegistry,
-  AsyncStorage
+  AsyncStorage,
+  ActivityIndicator
 } from 'react-native';
 import { persistStore } from 'redux-persist';
 import { StackNavigator } from 'react-navigation';
@@ -12,7 +13,7 @@ import  Cnode  from './routes.root';
 import { Provider } from 'react-redux';
 import { configureStore } from './store.root';
 import rootSaga from './src/saga/index';
-const styles = StyleSheet.create({
+const style = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -33,6 +34,12 @@ const styles = StyleSheet.create({
 const store = configureStore;
 store.runSaga(rootSaga)
 class App extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      rehydrated: false,
+    }
+  }
    componentWillMount() {
      persistStore(
        store,
@@ -42,6 +49,13 @@ class App extends Component {
        });
    }
    render(){
+      if(!this.state.rehydrated){
+         return (
+           <View style={style.container}>
+                <ActivityIndicator/>
+           </View>
+         )     
+      }
       return(
         <Provider store={store}>
           <Cnode/>

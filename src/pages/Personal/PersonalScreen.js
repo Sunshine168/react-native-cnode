@@ -130,7 +130,11 @@ class PersonalScreen extends Component {
             key={3}
             title={"最近主题"}
             hideChevron={true}
-            rightTitle={personalUserInfoDetail.recent_topics.length+""}
+            rightTitle={
+              personalUserInfoDetail.recent_topics ?
+              personalUserInfoDetail.recent_topics.length+""
+              :"loading"
+              }
       />
       <ListItem
           containerStyle={style.normal}
@@ -142,7 +146,11 @@ class PersonalScreen extends Component {
             key={4}
             title={"最近回复"}
             hideChevron={true}
-            rightTitle={personalUserInfoDetail.recent_replies.length+""}
+            rightTitle={
+              personalUserInfoDetail.recent_replies ?
+              personalUserInfoDetail.recent_replies.length+""
+              :"loading"
+              }
       />
       </View>
       <View style={style.controls}>

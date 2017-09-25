@@ -162,18 +162,19 @@ export const fetchMessages = (accesstoken)=> {
 
 
 
-   /**
+   /** 
+    *  回复功能
     *  @param topicId 主题id
     *  @param accesstoken 用户的accesstoken
     *  @param content 评论的主体内容
-    *  @param reply_id 对评论的回复(可省略)
+    *  @param reply_id 对评论的回复时需要带此参数(可省略)
    */
 
 
-   export const postReply = ({topicId,accesstoken,content,replyId})=>{
+   export const postReply = (topicId,accesstoken,content,replyId)=>{
        
        let replyData = {},
-            url = `/topic/${topicId}/replies`;
+            url = URL +  `/topic/${topicId}/replies`;
        if(replyId){
            replyData = {
              accesstoken:accesstoken,
@@ -205,3 +206,61 @@ export const fetchMessages = (accesstoken)=> {
       })
 
    }
+
+  /**
+   *  收藏主题
+   * @param {*} topicId  主题id
+   * @param {*} accesstoken  用户accesstoken
+   */
+   export const collectTopic = (topicId,accesstoken) => {
+       let url = URL + "/topic_collect/collect";
+       return new Promise((resolve,reject)=>{
+        fetch(url,{
+          method:'POST',
+          headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+          body:JSON.stringify({
+            topid_id:topicId,
+            accesstoken:accesstoken
+          })
+        })
+        .then(response=>response.json())
+        .then((res)=>{
+           resolve(res)
+        })
+        .catch((error)=>{
+          reject(error)
+        })
+      })
+   }
+   
+   /**
+   *  取消收藏主题
+   * @param {*} topicId  主题id
+   * @param {*} accesstoken  用户accesstoken
+   */
+   export const cancelCollectTopic = (topicId,accesstoken) => {
+    let url = URL + "/topic_collect/collect";
+    return new Promise((resolve,reject)=>{
+     fetch(url,{
+       method:'POST',
+       headers: {
+       'Accept': 'application/json',
+       'Content-Type': 'application/json'
+     },
+       body:JSON.stringify({
+         topic_id:topicId,
+         accesstoken:accesstoken
+       })
+     })
+     .then(response=>response.json())
+     .then((res)=>{
+        resolve(res)
+     })
+     .catch((error)=>{
+       reject(error)
+     })
+   })
+}

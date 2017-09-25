@@ -1,7 +1,7 @@
 import React from 'react';
 import { StackNavigator, TabNavigator } from 'react-navigation';
 import HomeTabNavigatorWithState, { HomeTabNavigator } from './tabRouter';
-import WelcomeScreen from '../pages/Welcome';
+import WelcomeScreen from '../pages/Welcome/WelcomeScreen';
 import TopicDetailScreen from '../pages/Topic/TopicDetailWebView';
 import { Icon } from 'react-native-elements';
 import LoginScreen  from '../pages/Auth/LoginScreen'

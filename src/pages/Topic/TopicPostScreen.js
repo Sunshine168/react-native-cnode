@@ -6,6 +6,7 @@ import { Button } from 'react-native-elements';
 import { postTopicRequest } from '../../actions/topic';
 import { connect } from 'react-redux'; 
 import Toast from 'react-native-root-toast';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 const style = StyleSheet.create({
   container: {
     flex: 1,
@@ -38,7 +39,6 @@ const style = StyleSheet.create({
   }
   componentWillReceiveProps = (nextProps) => {
       const { isPostTopicSuccess } = nextProps;
-      console.log(isPostTopicSuccess)
       if( isPostTopicSuccess ){
         this.setState({
           toastVisible:true,
@@ -87,7 +87,12 @@ const style = StyleSheet.create({
       contentValidationMessage
     }  = this.state;
     return (
-      <View style={style.container}>
+      <KeyboardAwareScrollView
+       style={{ backgroundColor: '#fff' }}
+       resetScrollToCoords={{ x: 0, y: 0 }}
+       contentContainerStyle={style.container}
+       scrollEnabled={true}
+      >
         <TabHeaderBar title={"发帖"}/>
         <View style={style.fromContainer}>
           <FormLabel>标题</FormLabel>
@@ -135,12 +140,12 @@ const style = StyleSheet.create({
         </View>
         <Toast
             visible={this.state.toastVisible}
-            position={20}
+            position={100}
             shadow={false}
             animation={false}
             hideOnPress={true}
         >发帖成功</Toast>
-      </View>
+      </KeyboardAwareScrollView>
     )
   }
 }

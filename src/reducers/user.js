@@ -10,8 +10,10 @@ const initialState = {
   error:"",
   isPendingGetPersonalDetail:false,
   personalUserInfoDetail:{
-
-  }
+    recent_topics:[],
+    recent_replies:[],
+  },
+  loginError:"",
 }
 
 export const userReducer = ( state =initialState,action={})=>{
@@ -32,14 +34,16 @@ export const userReducer = ( state =initialState,action={})=>{
         ...state,
         userInfo:action.payload,
         isPendingLogin:false,
-        error:""
+        error:"",
+        loginError:"",
       }
     }
       case LOGIN_IN.ERROR:{
         return {
           ...state,
           error:action.error,
-          isPendingLogin:false
+          isPendingLogin:false,
+          loginError:action.error,
         }
     }
      case GET_PERSONAL_USERINFO.PENDING:{

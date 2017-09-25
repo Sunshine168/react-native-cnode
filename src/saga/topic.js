@@ -1,6 +1,30 @@
-import { fetchTopics, fetchTopicDetail, postTopic} from '../api/index';
-import { put, select, call, take, fork, takeLatest } from 'redux-saga/effects';
-import { GET_HOME_TOPICS, GET_TOPIC_DETAIL, POST_TOPIC } from '../actions/topic.type'
+import { 
+  fetchTopics, 
+  fetchTopicDetail, 
+  postTopic, 
+  collectTopic,
+  cancelCollectTopic,
+  postReply,
+} from '../api/index';
+import { 
+  put, 
+  select, 
+  call, 
+  take, 
+  fork, 
+  takeLatest, 
+  takeEvery,
+} from 'redux-saga/effects';
+import { 
+  GET_HOME_TOPICS, 
+  GET_TOPIC_DETAIL, 
+  POST_TOPIC, 
+  COLLECT_TOPIC, 
+  CANCEL_COLLECT_TOPIC,
+} from '../actions/topic.type'
+import {
+  REPLY_TOPIC
+}from '../actions/reply.type.js'
 export const getTopics =  function* (params){
    try{
      const page = yield select(state=>state.topic.page)
@@ -64,7 +88,6 @@ export const getTopicDetail = function* (currentTopicDetailId){
     }
   }
   catch(e){
-    console.log(e)
     yield put({
       type: GET_TOPIC_DETAIL.ERROR,
       error:e
@@ -129,5 +152,125 @@ export const postTopicWatcher = function* (){
     const  params = yield take(POST_TOPIC.REQUEST);
     yield fork(postTopicRequest,params)
   }
+}
+
+
+const collectTopicRequest  = function* ({topicId}){
+     try{
+         yield put({
+           type:COLLECT_TOPIC.PENDING,
+         })
+         
+         const user = yield select(state=>state.user);
+         let result;
+         if(user.userInfo.success){
+            let accesstoken = user.accesstoken;
+            result = yield call(collectTopic,topicId,accesstoken);
+         }else{
+           yield put({
+             type:COLLECT_TOPIC.ERROR,
+             error:"accesstoken为空",
+           })
+         }
+
+         if(result.success){
+          yield put({
+            type:COLLECT_TOPIC.SUCCESS,
+          })
+         }else{
+          yield put({
+            type:COLLECT_TOPIC.ERROR,
+            error:result.error_msg
+          })
+         }
+     }catch(error){
+      yield put({
+        type:COLLECT_TOPIC.ERROR,
+        error
+      })
+     }
+}
+const cancelCollectTopicRequest  = function* ({topicId}){
+  try{
+      yield put({
+        type:COLLECT_TOPIC.PENDING,
+      })
+      const user = yield select(state=>state.user);
+      let result;
+      if(user.userInfo.success){
+         let accesstoken = user.accesstoken;
+         result = yield call(cancelCollectTopic,topicId,accesstoken);
+      }else{
+        yield put({
+          type:COLLECT_TOPIC.ERROR,
+          error:"accesstoken为空",
+        })
+      }
+     
+      if(result.success){
+       yield put({
+         type:COLLECT_TOPIC.SUCCESS,
+       })
+      }else{
+       yield put({
+         type:COLLECT_TOPIC.ERROR,
+         error:result.error_msg
+       })
+      }
+  }catch(error){
+   yield put({
+     type:COLLECT_TOPIC.ERROR,
+     error
+   })
+  }
+}
+
+
+export const postReplyRequest = function* ({topicId,content,replyId}){
+  try{
+     yield put({
+      type:REPLY_TOPIC.PENDING
+     })
+     const user = yield select(state=>state.user);
+     let result;
+     if(user.userInfo.success){
+        let accesstoken = user.accesstoken;
+        result = yield call(postReply,topicId,accesstoken,content,replyId);
+     }else{
+       yield put({
+         type:REPLY_TOPIC.ERROR,
+         error:"accesstoken为空",
+       })
+     }
+     if(result.success){
+      yield put({
+        type:REPLY_TOPIC.SUCCESS,
+      })
+     }else{
+      yield put({
+        type:REPLY_TOPIC.ERROR,
+        error:result.error_msg
+      })
+     }
+  }catch(error){
+    console.log(error)
+    yield put({
+      type:REPLY_TOPIC.ERROR,
+      error
+    })
+  }
+}
+export const collectTopicWatcher = function* (){
+    yield takeEvery(COLLECT_TOPIC.REQUEST,collectTopicRequest);
+    
+}
+
+export const replyRequestWatcher = function* (){
+  yield takeEvery(REPLY_TOPIC.REQUEST,postReplyRequest)
+}
+
+
+export const cancelCollectTopicWatcher = function* (){
+  yield takeEvery(CANCEL_COLLECT_TOPIC.REQUEST,cancelCollectTopicRequest); 
 }
 

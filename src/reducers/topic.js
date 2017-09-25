@@ -16,7 +16,6 @@ const initialState = {
   isPendingPostTopic:false,
   isPostTopicSuccess:false,
   error:'',
-
 }
 
 export const topicReducer = ( state = initialState, action={}) => {

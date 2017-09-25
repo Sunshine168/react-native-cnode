@@ -1,4 +1,11 @@
-import { watchRequestTopics, watchRequestTopic,  postTopicWatcher } from './topic';
+import { 
+  watchRequestTopics, 
+  watchRequestTopic,  
+  postTopicWatcher,
+  collectTopicWatcher,
+  cancelCollectTopicWatcher, 
+  replyRequestWatcher
+} from './topic';
 import { fork, takeEvery, all } from 'redux-saga/effects';
 import { watchAuth, watchGetPersonalDetail } from './user';
 import { watchRequestMessages } from './message';
@@ -18,7 +25,10 @@ const rootSaga = function* rootSaga(){
      fork(watchAuth),
      fork(watchRequestMessages),
      fork(watchGetPersonalDetail),
-     fork(postTopicWatcher)
+     fork(postTopicWatcher),
+     fork(collectTopicWatcher),
+     fork(cancelCollectTopicWatcher),
+     fork(replyRequestWatcher)
    ])
 }
 

@@ -4,8 +4,8 @@ import {
   Image,
   StyleSheet,
 } from 'react-native'
-
 import { resetNavigationTo } from '../../utils/method-helpers'
+import { connect } from 'react-redux';
 const styles = StyleSheet.create({
   container:{
     flex:1,
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   }
 })
 
-export default class WelcomeScreen extends Component {
+class WelcomeScreen extends Component {
   constructor(props){
     super(props)
     this.state = {
@@ -27,13 +27,17 @@ export default class WelcomeScreen extends Component {
     }
   }
   componentDidMount(){
-    const { navigation } = this.props
+    const { navigation, isLoginIn } = this.props;
     let jumpTimer = setTimeout(()=>{
         //  this.setState({
         //    isJump:true
         //  })
-        //  resetNavigationTo('Login', navigation);
-        navigation.navigate('Login');
+        if(isLoginIn){
+           resetNavigationTo('Home', navigation);
+        }else{
+           resetNavigationTo('Login', navigation);
+        }
+        
 
     },1000)
   }
@@ -45,3 +49,9 @@ export default class WelcomeScreen extends Component {
    )
   }
 }
+
+const mapStateToProps = (state)=>({
+  isLoginIn:state.user.userInfo.success,
+})
+
+export default connect(mapStateToProps)(WelcomeScreen);
