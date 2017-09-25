@@ -7,12 +7,14 @@ import './src/config/reactotron';
 import { rootReducer } from './src/reducers';
 import rootSaga from './src/saga/index'
 import { AsyncStorage } from 'react-native';
-const HANDLE = {
-  TRON_ENABLED:true,
+let sagaMiddleware;
+if(process.env.TRON_ENABLED){
+  sagaMonitor = Reactotron.createSagaMonitor();
+  sagaMiddleware = createSagaMiddleware({sagaMonitor});
+}else{
+  sagaMiddleware = createSagaMiddleware();
 }
-const sagaMonitor = Reactotron.createSagaMonitor()
-const sagaMiddleware = createSagaMiddleware({sagaMonitor});
-const tronEnabled = HANDLE ? HANDLE.TRON_ENABLED:process.env.TRON_ENABLED;
+
 const getMiddleware = () => {
   const middlewares = [sagaMiddleware];
 
@@ -21,6 +23,7 @@ const getMiddleware = () => {
       middlewares.push(createLogger());
     }
   }
+ 
 
   return applyMiddleware(...middlewares);
 };
@@ -34,7 +37,7 @@ const getEnhancers = () => {
 
 let store;
 
-if (__DEV__ && tronEnabled) {
+if (__DEV__ && process.env.TRON_ENABLED) {
 
   store = Reactotron.createStore(
     rootReducer,

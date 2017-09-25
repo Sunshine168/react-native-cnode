@@ -52,7 +52,6 @@ class TopicDetailScreen extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props)
     const {navigation, getTopicDetail} = this.props, {state} = navigation, {params} = state, {id} = params;
     //  getTopicDetail(id);
     let url = URL + `/topic/${id}`

@@ -2,12 +2,8 @@
 import Reactotron from 'reactotron-react-native';
 import { reactotronRedux } from 'reactotron-redux';
 import sagaPlugin from 'reactotron-redux-saga';
-
-const HANDLE = {
-  TRON_ENABLED:true,
-}
-const tronEnabled = HANDLE ? HANDLE.TRON_ENABLED:process.env.TRON_ENABLED;
-if (__DEV__ && tronEnabled) {
+// process.env.TRON_ENABLED = true;
+if (__DEV__ && process.env.TRON_ENABLED) {
   Reactotron
   .configure()
   .use(sagaPlugin())
